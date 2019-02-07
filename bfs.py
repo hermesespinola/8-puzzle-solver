@@ -9,7 +9,6 @@ def visit(queue):
     return queue.popleft()
 
 def expand(node: State) -> list:
-    global nodes_created
     # Create a list of neighbors generating all possible moves from the current state
     neighbors = [State(move(node.state, move_dir), node, move_dir, node.depth+1, node.cost+1)
         for move_dir in ['left', 'right', 'up', 'down']]

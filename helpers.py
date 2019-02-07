@@ -1,4 +1,5 @@
 board_len, board_side = 9, 3
+target_state = [1, 2, 3, 4, 5, 6, 7, 8, 0]
 
 def read_board_input(conf: str, separator: str) -> list:
     initial_state = [int(x) for x in conf.split(separator)]
@@ -10,6 +11,16 @@ def read_file_input(path: str, separator: str) -> list:
     with open(path, 'r') as board_file:
         lines = board_file.read().splitlines()
         return read_board_input(separator.join(lines), separator)
+
+def memoize(fun):
+    values = dict()
+    def m(val):
+        if val in values:
+            return values[val]
+        else:
+            values[val] = fun(val)
+            return values[val]
+    return m
 
 def swap(lst: list, i1, i2) -> list:
     tmp = lst[i1]

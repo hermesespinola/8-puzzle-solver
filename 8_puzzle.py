@@ -6,9 +6,8 @@ from state import State
 from collections import deque
 from argparse import ArgumentParser
 from drivers import methods
-from helpers import read_board_input, read_file_input
+from helpers import read_board_input, read_file_input, target_state
 
-target_state = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 seen = set()
 
 # for result output
@@ -73,7 +72,8 @@ def main():
     input_group.add_argument('-f', '--file', help='set input file path')
     input_group.add_argument('-b', '--board', help='set board input text')
     parser.add_argument('-s', '--separator', help='set separator for each element of board input')
-    parser.set_defaults(separator=' ')
+    parser.add_argument('-m', '--method', help="'bfs' or 'a_star'")
+    parser.set_defaults(separator=' ', method='bfs')
     input_group.set_defaults(file='board.txt')
     args = parser.parse_args()
     initial_state = []
@@ -82,7 +82,7 @@ def main():
     else:
         initial_state = read_file_input(args.file, args.separator)
     start = timeit.default_timer()
-    solve(initial_state, 'bfs')
+    solve(initial_state, args.method)
     stop = timeit.default_timer()
     output(stop-start)
 

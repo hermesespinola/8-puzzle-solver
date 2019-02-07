@@ -13,7 +13,7 @@ class State:
         return self.id == other.id
 
     def __lt__(self, other):
-        return self.id < other.id
+        return self.cost < other.cost
 
     def __hash__(self):
         return int(self.id)
