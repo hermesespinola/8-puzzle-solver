@@ -2,10 +2,10 @@ from state import State
 from collections import deque
 from helpers import move
 
-def init_struct(initial_state: State):
+def init_struct(initial_state: State) -> deque:
     return deque([initial_state])
 
-def visit(queue):
+def visit(queue) -> State:
     return queue.popleft()
 
 def expand(node: State) -> list:

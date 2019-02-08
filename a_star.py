@@ -4,7 +4,7 @@ from helpers import move, target_state, board_side, memoize
 
 find_target_index = memoize(target_state.index)
 
-def calc_cost(board_conf: list, depth):
+def calc_cost(board_conf: list, depth) -> int:
     total_cost = 0
     for idx, piece in enumerate(board_conf):
         if piece == 0:
@@ -15,12 +15,12 @@ def calc_cost(board_conf: list, depth):
         total_cost += v_cost + h_cost
     return total_cost + depth
 
-def init_struct(initial_state: State):
+def init_struct(initial_state: State) -> list:
     h = [initial_state]
     heapq.heapify(h)
     return h
 
-def visit(heap):
+def visit(heap) -> State:
     return heapq.heappop(heap)
 
 def expand(node: State) -> list:
