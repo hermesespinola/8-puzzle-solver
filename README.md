@@ -23,7 +23,7 @@ optional arguments:
   -s SEPARATOR, --separator SEPARATOR
                         set separator for each element of board input
   -m METHOD, --method METHOD
-                        'bfs' or 'a_star'
+                        'bfs', 'dfs', or 'a_star'
   -d, --debug           enable debugging logs
 ```
 
