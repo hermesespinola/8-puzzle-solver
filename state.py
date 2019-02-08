@@ -17,3 +17,6 @@ class State:
 
     def __hash__(self):
         return int(self.id)
+
+    def __repr__(self):
+        return str(self.state)

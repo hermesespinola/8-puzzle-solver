@@ -2,8 +2,8 @@
 # coding=utf-8
 
 import timeit
+from pprint import pprint
 from state import State
-from collections import deque
 from argparse import ArgumentParser
 from drivers import methods
 from helpers import read_board_input, read_file_input, target_state
@@ -14,14 +14,7 @@ seen = set()
 goal_node: State = None
 nodes_visited = 0
 nodes_created = 0
-
-# def expand(node: State) -> list:
-#     global nodes_created
-#     # Create a list of neighbors generating all possible moves from the current state
-#     neighbors = [State(move(node.state, move_dir), node, move_dir, node.depth+1, node.cost+1)
-#         for move_dir in ['left', 'right', 'up', 'down']]
-#     nodes_created += 4
-#     return [n for n in neighbors if n.state]
+debug = False
 
 def solve(initial_state, method_name):
     global seen, goal_node, nodes_visited, nodes_created
@@ -30,7 +23,11 @@ def solve(initial_state, method_name):
     # keep track of which nodes we have visited and which we have to visit 
     struct = init_struct(State(initial_state))
     nodes_created += 1
+    level = 0
     while struct:
+        if debug:
+            print('level', level)
+            pprint(struct)
         node = visit(struct)
         seen.add(node)
 
@@ -47,6 +44,7 @@ def solve(initial_state, method_name):
             if neighbor not in seen:
                 add(struct, neighbor)
                 seen.add(neighbor)
+        level += 1
 
 def get_path():
     curr = goal_node
@@ -63,19 +61,22 @@ def output(time):
         print('Cost of path:', goal_node.depth)
         print('Path to goal:', ', '.join(get_path()))
     print('# visited nodes:', nodes_visited)
-    print('Running time (secconds):', format(time, '.8f'))
+    print('Running time (seconds):', format(time, '.8f'))
     print('Used memory:', 'If each node requires only 72 bytes, {}'.format(nodes_created * 72))
 
 def main():
+    global debug
     parser = ArgumentParser()
     input_group = parser.add_mutually_exclusive_group()
     input_group.add_argument('-f', '--file', help='set input file path')
     input_group.add_argument('-b', '--board', help='set board input text')
     parser.add_argument('-s', '--separator', help='set separator for each element of board input')
     parser.add_argument('-m', '--method', help="'bfs' or 'a_star'")
-    parser.set_defaults(separator=' ', method='bfs')
+    parser.add_argument('-d', '--debug', help='enable debugging logs', action='store_true')
+    parser.set_defaults(separator=' ', method='a_star')
     input_group.set_defaults(file='board.txt')
     args = parser.parse_args()
+    debug = args.debug
     initial_state = []
     if args.board:
         initial_state = read_board_input(args.board, args.separator)
