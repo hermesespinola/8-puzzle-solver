@@ -45,6 +45,6 @@ Some examples:
 Cost of path: 26
 Path to goal: left, up, right, down, right, down, left, left, up, right, right, down, left, left, up, right, right, up, left, left, down, right, right, up, left, left
 # visited nodes: 164919
-Running time (secconds): 3.98746720
+Running time (seconds): 3.98746720
 Used memory: If each node requires only 72 bytes, 47496456
 ```
