@@ -8,16 +8,15 @@ from argparse import ArgumentParser
 from drivers import methods
 from helpers import read_board_input, read_file_input, target_state
 
-seen = set()
-
 # for result output
-goal_node: State = None
 nodes_visited = 0
 nodes_created = 0
 debug = False
 
 def solve(initial_state, method_name):
-    global seen, goal_node, nodes_visited, nodes_created
+    global nodes_visited, nodes_created
+    goal_node: State = None
+    seen = set()
     init_struct, visit, expand, add = methods[method_name]
 
     # keep track of which nodes we have visited and which we have to visit 
@@ -45,8 +44,9 @@ def solve(initial_state, method_name):
                 add(struct, neighbor)
                 seen.add(neighbor)
         level += 1
+    return goal_node
 
-def get_path():
+def get_path(goal_node: State) -> list:
     curr = goal_node
     path = [goal_node.move]
     while curr.parent:
@@ -54,12 +54,12 @@ def get_path():
         path.insert(0, curr.move)
     return path[1:]
 
-def output(time):
+def output(goal_node: State, time: float):
     if not goal_node:
         print('Solution not found')
     else:
         print('Cost of path:', goal_node.depth)
-        print('Path to goal:', ', '.join(get_path()))
+        print('Path to goal:', ', '.join(get_path(goal_node)))
     print('# visited nodes:', nodes_visited)
     print('Running time (seconds):', format(time, '.8f'))
     print('Used memory:', 'If each node requires only 72 bytes, {}'.format(nodes_created * 72))
@@ -71,7 +71,7 @@ def main():
     input_group.add_argument('-f', '--file', help='set input file path')
     input_group.add_argument('-b', '--board', help='set board input text')
     parser.add_argument('-s', '--separator', help='set separator for each element of board input')
-    parser.add_argument('-m', '--method', help="'bfs' or 'a_star'")
+    parser.add_argument('-m', '--method', help="'bfs', 'dfs' or 'a_star'")
     parser.add_argument('-d', '--debug', help='enable debugging logs', action='store_true')
     parser.set_defaults(separator=' ', method='a_star')
     input_group.set_defaults(file='board.txt')
@@ -83,9 +83,9 @@ def main():
     else:
         initial_state = read_file_input(args.file, args.separator)
     start = timeit.default_timer()
-    solve(initial_state, args.method)
+    goal_node = solve(initial_state, args.method)
     stop = timeit.default_timer()
-    output(stop-start)
+    output(goal_node, stop-start)
 
 if __name__ == "__main__":
     main()
