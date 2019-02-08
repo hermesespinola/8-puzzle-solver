@@ -71,7 +71,7 @@ def main():
     input_group.add_argument('-f', '--file', help='set input file path')
     input_group.add_argument('-b', '--board', help='set board input text')
     parser.add_argument('-s', '--separator', help='set separator for each element of board input')
-    parser.add_argument('-m', '--method', help="'bfs', 'dfs' or 'a_star'")
+    parser.add_argument('-m', '--method', help="'bfs', 'dfs', or 'a_star'")
     parser.add_argument('-d', '--debug', help='enable debugging logs', action='store_true')
     parser.set_defaults(separator=' ', method='a_star')
     input_group.set_defaults(file='board.txt')
