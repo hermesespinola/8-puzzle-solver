@@ -13,7 +13,7 @@ nodes_visited = 0
 nodes_created = 0
 debug = False
 
-def solve(initial_state, method_name):
+def solve(initial_state, method_name) -> State:
     global nodes_visited, nodes_created
     goal_node: State = None
     seen = set()
@@ -34,7 +34,7 @@ def solve(initial_state, method_name):
         if node.state == target_state:
             # mark the node that contains the solution
             goal_node = node
-            return struct
+            return goal_node
 
         neighbors = expand(node)
         nodes_created += len(neighbors)
